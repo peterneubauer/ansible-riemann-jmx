@@ -1,0 +1,13 @@
+---
+- file: dest=/etc/sv/riemann-jmx/log state=directory
+- template: dest=/etc/sv/riemann-jmx/run mode=0755 src=riemann_jmx_run.sh
+- template: dest=/etc/sv/riemann-jmx/log/run mode=0755 src=log_run
+
+
+- file: src=/etc/sv/riemann-jmx  dest=/etc/service/riemann-jmx state=link
+- copy: src=riemann-jmx.jar  dest=/etc/riemann-jmx/riemann-jmx.jar
+- copy: src=jmxterm.jar  dest=/etc/riemann-jmx/jmxterm.jar
+- runit: name=riemann-jmx state=started
+- shell: "sv stop riemann-jmx"
+- shell: "sv start riemann-jmx"
+
